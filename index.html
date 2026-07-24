@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ms" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    
+    <!-- PAKSA PAPARAN DESKTOP PADA TELEFON ANDROID / IOS (WIDTH 1280px) -->
+    <meta name="viewport" content="width=1280, initial-scale=0.3, minimum-scale=0.25, maximum-scale=3.0, user-scalable=yes">
+    
+    <title>e-Portal Fail Panitia Digital - SK PAYANG</title>
+    
+    <!-- Kod Ikon Favicon Logo SKP -->
+    <link rel="icon" type="image/jpeg" href="https://i.postimg.cc/sDS7znHY/LOGO-SKP.jpg">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN Untuk Graf -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        maroon: {
+                            950: '#140308',
+                            900: '#2b0611',
+                            800: '#420919',
+                        },
+                        navy: {
+                            900: '#0a0f1d',
+                            950: '#050811',
+                        }
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 0 15px rgba(245, 158, 11, 0.3)',
+                        'gold-glow-lg': '0 0 25px rgba(245, 158, 11, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes float-slow {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(30px, -20px) scale(1.1); }
+        }
+        @keyframes float-reverse {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(-30px, 20px) scale(1.08); }
+        }
+        .orb-1 { animation: float-slow 12s ease-in-out infinite; }
+        .orb-2 { animation: float-reverse 15s ease-in-out infinite; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(10, 15, 29, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.8); }
+    </style>
+</head>
+
+<body class="bg-maroon-950 text-slate-100 font-sans min-h-screen relative overflow-x-hidden antialiased flex flex-col justify-between">
+
+    <!-- BACKGROUND ANIMATED ORBS -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="orb-1 absolute -top-24 -left-24 w-[550px] h-[550px] rounded-full bg-gradient-to-br from-red-900/40 via-maroon-800/30 to-transparent blur-3xl"></div>
+        <div class="orb-2 absolute -bottom-32 -right-32 w-[650px] h-[650px] rounded-full bg-gradient-to-tl from-amber-900/25 via-maroon-900/40 to-transparent blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[850px] rounded-full bg-navy-900/50 blur-[130px]"></div>
+    </div>
+
+    <!-- GLASS CONTAINER UTAMA (FIXED DESKTOP WIDTH 1280px) -->
+    <div class="relative z-10 w-[1280px] max-w-full mx-auto p-4 lg:p-6 my-auto">
+        <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl shadow-black/90">
+            
+            <!-- BENTO GRID LAYOUT -->
+            <div class="grid grid-cols-12 gap-6 items-stretch">
+                
+                <!-- PANEL LEFT SIDEBAR (3 COLUMNS) -->
+                <div class="col-span-3 flex flex-col justify-between space-y-4 bg-navy-950/80 border border-amber-500/30 rounded-2xl p-5 shadow-inner">
+                    
+                    <!-- COMPACT HEADER -->
+                    <div class="text-left space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <img src="https://i.postimg.cc/sDS7znHY/LOGO-SKP.jpg" alt="Logo SK PAYANG" class="w-14 h-14 rounded-full object-cover border-2 border-amber-400 shadow-gold-glow">
+                            <div>
+                                <h1 class="text-2xl font-extrabold tracking-wide text-white drop-shadow-md">SK PAYANG</h1>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-full">e-Portal Panitia</span>
+                            </div>
+                        </div>
+                        <div class="border-b border-amber-500/20 pb-3">
+                            <p class="text-xs font-semibold text-slate-300 tracking-wide leading-relaxed uppercase">
+                                PORTAL PENGURUSAN FAIL DIGITAL PANITIA
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- PEMILIH TAHUN (2026, 2027, 2028) -->
+                    <div class="bg-black/60 border border-amber-500/30 rounded-xl p-3 text-center space-y-2 shadow-inner">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-amber-400 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-calendar-days"></i> Tahun Sesi Persekolahan
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-950/80 rounded-lg border border-white/10" id="yearSelector">
+                            <button onclick="switchYear('2026')" id="btnYear2026" class="py-1.5 rounded-md text-xs font-extrabold transition-all duration-200 bg-amber-500 text-slate-950 shadow">2026</button>
+                            <button onclick="switchYear('2027')" id="btnYear2027" class="py-1.5 rounded-md text-xs font-extrabold transition-all duration-200 text-slate-400 hover:text-white">2027</button>
+                            <button onclick="switchYear('2028')" id="btnYear2028" class="py-1.5 rounded-md text-xs font-extrabold transition-all duration-200 text-slate-400 hover:text-white">2028</button>
+                        </div>
+                    </div>
+
+                    <!-- BUTANG BUKA MODAL GRAF ANALISIS -->
+                    <button onclick="openAnalyticsModal()" class="w-full bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs py-3 px-4 rounded-xl shadow-gold-glow flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-[1.02]">
+                        <i class="fa-solid fa-chart-line text-sm"></i>
+                        <span>Analisis Graf Pencapaian</span>
+                    </button>
+
+                    <!-- WIDGET JAM & TARIKH REAL-TIME -->
+                    <div class="bg-black/60 border border-amber-500/30 rounded-xl p-3 text-center space-y-1 shadow-inner">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-amber-400 flex items-center justify-center gap-1.5">
+                            <i class="fa-regular fa-clock animate-pulse"></i> Waktu Semasa
+                        </div>
+                        <div id="liveClock" class="text-lg font-mono font-extrabold text-white tracking-widest drop-shadow-sm">
+                            00:00:00 AM
+                        </div>
+                        <div id="liveDate" class="text-[10px] font-semibold text-slate-300 uppercase tracking-wide">
+                            Hari, 00 Bulan 0000
+                        </div>
+                    </div>
+
+                    <!-- KAD PROFIL PK KURIKULUM -->
+                    <div class="bg-gradient-to-br from-maroon-900/90 to-navy-900/90 border border-amber-400/40 rounded-xl p-4 relative overflow-hidden shadow-gold-glow group hover:border-amber-400 transition-all duration-300">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-amber-500/10 rounded-full blur-xl pointer-events-none"></div>
+                        <div class="text-[10px] font-bold text-amber-400 tracking-widest uppercase mb-3 flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-shield text-xs"></i> Pengurusan Kurikulum
+                        </div>
+                        <div class="flex items-center space-x-3.5">
+                            <div class="relative flex-shrink-0">
+                                <img src="https://i.postimg.cc/bwWSGWCS/PK1.jpg" alt="PK Kurikulum" class="w-20 h-20 rounded-full object-cover object-top border-2 border-amber-400 shadow-md bg-slate-900">
+                                <span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Status: Aktif"></span>
+                            </div>
+                            <div class="overflow-hidden">
+                                <h3 class="text-sm font-bold text-white truncate group-hover:text-amber-300 transition-colors">Pn. Tina Sanusi</h3>
+                                <p class="text-xs font-semibold text-amber-400/90 mt-0.5">PK KURIKULUM</p>
+                                <p class="text-[11px] text-slate-400 mt-1 line-clamp-2">Penyelia & Penilai Pengurusan Fail Panitia Digital</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- METRIK SUMMARY -->
+                    <div class="bg-black/60 border border-amber-500/20 rounded-xl p-3 text-xs space-y-2">
+                        <div class="flex justify-between items-center text-slate-300">
+                            <span><i class="fa-solid fa-folder-tree text-amber-400 mr-1.5"></i>Jumlah Panitia:</span>
+                            <span class="font-bold text-white">12 Unit</span>
+                        </div>
+                        <div class="flex justify-between items-center text-slate-300">
+                            <span><i class="fa-solid fa-clipboard-check text-amber-400 mr-1.5"></i>Instrumen SPb-02:</span>
+                            <span class="font-bold text-amber-400">42 Item</span>
+                        </div>
+                        <div class="flex justify-between items-center text-slate-300">
+                            <span><i class="fa-solid fa-cloud text-emerald-400 mr-1.5"></i>Google Sheet Sync:</span>
+                            <span id="syncStatus" class="text-emerald-400 font-bold flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Terhubung
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- MAIN BENTO GRID: 12 PANITIA (9 COLUMNS, 3x4 GRID) -->
+                <div class="col-span-9">
+                    <div class="grid grid-cols-3 gap-3.5 h-full" id="panitiaGrid">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER MATRIX TECH STYLE -->
+    <footer class="relative z-10 text-center py-4">
+        <div class="inline-flex items-center gap-2 bg-black border border-amber-500/40 hover:border-amber-400 px-6 py-2 rounded-full shadow-lg backdrop-blur-md transition-all duration-300">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+            <span class="text-xs font-mono tracking-widest text-red-500 uppercase font-semibold">
+                SEPAKAT MENGGAPAI KECEMERLANGAN ; 2026
+            </span>
+        </div>
+    </footer>
+
+    <!-- MODAL POP-UP ANALISIS GRAF PENCAPAIAN PANITIA -->
+    <div id="analyticsModal" class="fixed inset-0 z-50 flex items-center justify-center p-5 bg-navy-950/90 backdrop-blur-md hidden opacity-0 transition-all duration-300">
+        <div class="bg-navy-900 border-2 border-amber-500/50 rounded-2xl w-full max-w-5xl max-h-[92vh] flex flex-col shadow-gold-glow-lg transform scale-95 transition-transform duration-300 overflow-hidden">
+            
+            <div class="p-5 bg-gradient-to-r from-maroon-900 via-black to-navy-950 border-b border-amber-500/30 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+                        <i class="fa-solid fa-chart-pie text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Analisis Pencapaian Fail Panitia Digital</h2>
+                        <p class="text-xs text-slate-300">Laporan Prestasi Keseluruhan SK PAYANG (2026 - 2028)</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="text-slate-400 hover:text-amber-400 transition-colors p-1.5 rounded-lg hover:bg-white/10">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 bg-navy-950/60">
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="bg-black/60 border border-amber-500/30 rounded-xl p-3.5 text-center space-y-1">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Purata Sekolah (<span class="analyticsYearTxt">2026</span>)</span>
+                        <div id="statAvgSchool" class="text-2xl font-black text-amber-400">0%</div>
+                        <div class="w-full bg-slate-900 rounded-full h-1.5 border border-white/10 overflow-hidden">
+                            <div id="statAvgBar" class="bg-amber-400 h-full transition-all duration-500" style="width:0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-black/60 border border-emerald-500/30 rounded-xl p-3.5 text-center space-y-1">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Pencapaian Tertinggi</span>
+                        <div id="statTopPanitia" class="text-sm font-bold text-white truncate">-</div>
+                        <p id="statTopPercent" class="text-xs font-black text-emerald-400">0% Selesai</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-red-500/30 rounded-xl p-3.5 text-center space-y-1">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-red-400">Perlu Bimbingan</span>
+                        <div id="statLowPanitia" class="text-sm font-bold text-white truncate">-</div>
+                        <p id="statLowPercent" class="text-xs font-black text-red-400">0% Selesai</p>
+                    </div>
+                </div>
+
+                <div class="bg-black/60 border border-amber-500/30 rounded-xl p-4 space-y-3">
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-chart-bar"></i> Pencapaian 12 Panitia Bagi Tahun Sesi <span class="analyticsYearTxt">2026</span>
+                        </h3>
+                        <span class="text-[10px] text-slate-400 font-mono">Status SPb-02 JPN Sabah</span>
+                    </div>
+                    <div class="relative h-72 w-full">
+                        <canvas id="chartYearCurrent"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-black/60 border border-amber-500/30 rounded-xl p-4 space-y-3">
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line"></i> Perbandingan Prestasi Multi-Tahun (2026 vs 2027 vs 2028)
+                        </h3>
+                        <span class="text-[10px] text-slate-400 font-mono">Trend Kemajuan 3 Tahun</span>
+                    </div>
+                    <div class="relative h-72 w-full">
+                        <canvas id="chartMultiYearTrend"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 bg-black/80 border-t border-amber-500/20 flex justify-end">
+                <button onclick="closeAnalyticsModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-5 py-2 rounded-xl">
+                    Tutup Laporan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POP-UP SENARAI SEMAK & DRIVE -->
+    <div id="panitiaModal" class="fixed inset-0 z-50 flex items-center justify-center p-5 bg-navy-950/90 backdrop-blur-md hidden opacity-0 transition-all duration-300">
+        <div class="bg-navy-900 border-2 border-amber-500/50 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-gold-glow-lg transform scale-95 transition-transform duration-300 overflow-hidden">
+            
+            <div class="p-5 bg-gradient-to-r from-maroon-900 via-black to-navy-950 border-b border-amber-500/30 flex justify-between items-start">
+                <div class="flex items-center space-x-3.5">
+                    <img id="modalKpImg" src="" alt="Ketua Panitia" class="w-16 h-16 rounded-full border-2 border-amber-400 object-cover object-top shadow-gold-glow bg-slate-900">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-amber-400 tracking-widest uppercase bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Instrumen SPb-02 JPN Sabah</span>
+                            <span id="modalYearBadge" class="text-[10px] font-black text-slate-950 bg-amber-400 px-2 py-0.5 rounded shadow">2026</span>
+                        </div>
+                        <h2 id="modalTitle" class="text-xl font-bold text-white mt-1">Nama Panitia</h2>
+                        <p id="modalKpName" class="text-xs text-slate-300 font-medium">Ketua Panitia: Pn. Nama</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-amber-400 transition-colors p-1.5 rounded-lg hover:bg-white/10">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-5 bg-navy-950/60">
+                <div class="bg-black/60 border border-amber-500/30 rounded-xl p-4 flex justify-between items-center gap-3">
+                    <div class="space-y-1">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-folder-open text-amber-400"></i> Folder Google Drive Panitia (Fail Induk)
+                        </h4>
+                        <p class="text-xs text-slate-400">Folder utama bagi Ketua Panitia dan ahli memuat naik dokumen digital.</p>
+                        <p id="driveStatusText" class="text-[11px] font-semibold text-amber-300/80 italic">Status: Pautan belum ditetapkan.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a id="modalDriveLink" href="#" target="_blank" class="hidden inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-md">
+                            <span>Buka Google Drive</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                        <button onclick="openDriveEditModal()" class="inline-flex items-center justify-center gap-1.5 bg-amber-500/20 border border-amber-500/50 text-amber-300 font-bold text-xs px-3 py-2.5 rounded-xl">
+                            <i class="fa-solid fa-pen-to-square"></i> Set Link Drive
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-black/60 border border-amber-500/20 rounded-xl p-4 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-200 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-emerald-400"></i> Peratus Progress Kemaskini Fail (<span id="modalProgressYearText">2026</span>)
+                        </span>
+                        <span id="modalProgressText" class="text-sm font-extrabold text-amber-400">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-950 rounded-full h-3 overflow-hidden p-0.5 border border-amber-500/30">
+                        <div id="modalProgressBar" class="bg-gradient-to-r from-amber-500 to-emerald-400 h-full transition-all duration-500 w-0"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i> Senarai Semak Dokumen & Fail Eviden Digital (42 Item SPb-02)
+                    </h3>
+                    <div id="checklistContainer" class="space-y-2">
+                        <!-- Generated via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 bg-black/80 border-t border-amber-500/20 flex justify-end">
+                <button onclick="closeModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-5 py-2 rounded-xl">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POP-UP EDIT DRIVE LINK INDUK -->
+    <div id="driveEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-all duration-200">
+        <div class="bg-navy-900 border-2 border-amber-500/60 rounded-2xl w-full max-w-lg p-5 shadow-gold-glow space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-brands fa-google-drive text-amber-400"></i> Set Pautan Google Drive Panitia (<span id="driveModalYear">2026</span>)
+                </h3>
+                <button onclick="closeDriveEditModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-2 text-xs">
+                <p class="text-slate-300 font-semibold">Masukkan / Tampal URL Folder Google Drive Panitia di bawah:</p>
+                <input type="url" id="driveInputUrl" placeholder="https://drive.google.com/drive/folders/..." class="w-full bg-black/60 border border-amber-500/40 rounded-xl p-3 text-white text-xs focus:outline-none">
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeDriveEditModal()" class="bg-slate-800 text-slate-300 text-xs font-bold px-4 py-2 rounded-xl">Batal</button>
+                <button onclick="saveDriveLinkInduk()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl">Simpan Pautan Drive</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POP-UP EVIDEN ITEM -->
+    <div id="evidenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-all duration-200">
+        <div class="bg-navy-900 border-2 border-amber-500/60 rounded-2xl w-full max-w-lg p-5 shadow-gold-glow space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-file-arrow-up text-amber-400"></i> Pautan Fail Eviden Digital Item
+                </h3>
+                <button onclick="closeEvidenModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-2 text-xs">
+                <p id="evidenItemTitle" class="font-bold text-amber-300">Item: -</p>
+                <input type="url" id="evidenInputUrl" placeholder="https://drive.google.com/file/d/..." class="w-full bg-black/60 border border-amber-500/40 rounded-xl p-3 text-white text-xs focus:outline-none">
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="deleteEvidenUrl()" id="btnDeleteEviden" class="bg-red-950 text-red-300 text-xs font-bold px-3 py-2 rounded-xl">Padam Eviden</button>
+                <div class="flex gap-2">
+                    <button onclick="closeEvidenModal()" class="bg-slate-800 text-slate-300 text-xs font-bold px-4 py-2 rounded-xl">Batal</button>
+                    <button onclick="saveEvidenUrl()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl">Simpan Eviden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxcat78RuK40Tgo2FRqwcJjHS_kzCwl2QLrSE-8u-_igGWCAQbauj6k-aINeILjup_5Tw/exec";
+
+        let selectedYear = '2026';
+
+        const panitiaList = [
+            { id: 'bm', name: 'Bahasa Melayu', kp: 'Pn Yati Nur Fatihah Tikson', img: 'https://i.postimg.cc/pXWTyqqF/KP-BM.jpg' },
+            { id: 'bi', name: 'Bahasa Inggeris', kp: 'Pn Bibiana Anthony Mayoh', img: 'https://i.postimg.cc/TYdwhCCW/KP-BI.jpg' },
+            { id: 'mt', name: 'Matematik', kp: 'En Rosly Lataena', img: 'https://i.postimg.cc/DyvZmBBG/KP-MT.jpg' },
+            { id: 'sc', name: 'Sains', kp: 'Cik Salha Siladjan', img: 'https://i.postimg.cc/Tw10RrBm/KP-SC.jpg' },
+            { id: 'sej', name: 'Sejarah', kp: 'Pn Darwina Mathew', img: 'https://i.postimg.cc/KzbNM6Kj/KP-SEJ.jpg' },
+            { id: 'pai', name: 'Pendidikan Agama Islam', kp: 'Pn Aslina Ali', img: 'https://i.postimg.cc/j5R5NcRS/KP-PAI.jpg' },
+            { id: 'moral', name: 'Pendidikan Moral', kp: 'Guru Berkaitan / Guru Moral', img: 'https://i.postimg.cc/sDS7znHY/LOGO-SKP.jpg' },
+            { id: 'pjk', name: 'Pendidikan Jasmani & Kesihatan', kp: 'En Aslan Ardani', img: 'https://i.postimg.cc/L419XGtC/KP-PJK.jpg' },
+            { id: 'psv', name: 'Pendidikan Seni Visual', kp: 'Pn Rowahni Abu Bakar', img: 'https://i.postimg.cc/c15j8JmN/KP-PSV.jpg' },
+            { id: 'muzik', name: 'Pendidikan Muzik', kp: 'En Rosli Pitri', img: 'https://i.postimg.cc/FzzhVs1Q/KP-MZZ.jpg' },
+            { id: 'ba', name: 'Bahasa Arab', kp: 'Cik Aisyah Najihah Abd Raisham', img: 'https://i.postimg.cc/3NRcckXT/KP-BA.jpg' },
+            { id: 'rbt', name: 'Reka Bentuk & Teknologi', kp: 'Cik Nir Shafiqah Harun', img: 'https://i.postimg.cc/KztWX7TJ/KP-RBT.jpg' }
+        ];
+
+        const instrumenList = [
+            { id: '1.1', code: '1.1', section: '1. PENGURUSAN AM', title: 'Surat Menyurat' },
+            { id: '1.2', code: '1.2', section: '1. PENGURUSAN AM', title: 'Visi & Misi KPM' },
+            { id: '1.3', code: '1.3', section: '1. PENGURUSAN AM', title: 'Struktur / Carta Organisasi JKKS & Panitia' },
+            { id: '1.4', code: '1.4', section: '1. PENGURUSAN AM', title: 'Butiran Peribadi Ahli Panitia' },
+            { id: '1.5', code: '1.5', section: '1. PENGURUSAN AM', title: 'Jadual Waktu Persendirian Ahli Panitia' },
+            { id: '1.6', code: '1.6', section: '1. PENGURUSAN AM', title: 'Dokumen Standard Kurikulum & Pentaksiran (DSKP)' },
+            { id: '1.7', code: '1.7', section: '1. PENGURUSAN AM', title: 'Rancangan Pengajaran Tahunan (RPH guru perlu disemak)' },
+            { id: '1.8', code: '1.8', section: '1. PENGURUSAN AM', title: 'Takwim Panitia' },
+            { id: '1.9', code: '1.9', section: '1. PENGURUSAN AM', title: 'Jadual & Analisis Pencerapan Guru (Standard 4 SKPMg2)' },
+            { id: '1.10', code: '1.10', section: '1. PENGURUSAN AM', title: 'Senarai Buku Teks/Buku Aktiviti/Buku Kerja/Buku Rujukan' },
+            { id: '1.11', code: '1.11', section: '1. PENGURUSAN AM', title: 'Takwim Aktiviti Ko-Akademik (Jika berkaitan)' },
+            { id: '2.1', code: '2.1', section: '2. PEKELILING / SURAT SIARAN', title: 'SPI Bil 3/1987: Penyeliaan Pengajaran Pembelajaran' },
+            { id: '2.2', code: '2.2', section: '2. PEKELILING / SURAT SIARAN', title: 'SPI Bil 3/1999: Penyediaan Rekod PdP' },
+            { id: '2.3', code: '2.3', section: '2. PEKELILING / SURAT SIARAN', title: 'SPI Bil 2/2023: Garis Panduan Pengurusan Panitia Mata Pelajaran Di Sekolah KPM' },
+            { id: '2.4', code: '2.4', section: '2. PEKELILING / SURAT SIARAN', title: 'Pekeliling lain yang berkaitan mata pelajaran' },
+            { id: '3.1', code: '3.1', section: '3. MESYUARAT', title: 'Surat Panggilan Mesyuarat JKKS' },
+            { id: '3.2', code: '3.2', section: '3. MESYUARAT', title: 'Minit Mesyuarat JKKS' },
+            { id: '3.3', code: '3.3', section: '3. MESYUARAT', title: 'Surat Panggilan Mesyuarat Panitia' },
+            { id: '3.4', code: '3.4', section: '3. MESYUARAT', title: 'Minit Mesyuarat Panitia' },
+            { id: '4.1', code: '4.1', section: '4. PENTAKSIRAN', title: 'Takwim Pentaksiran' },
+            { id: '4.2', code: '4.2', section: '4. PENTAKSIRAN', title: 'Jadual Penyediaan Kertas Peperiksaan (jika berkaitan)' },
+            { id: '4.3', code: '4.3', section: '4. PENTAKSIRAN', title: 'Jadual Penyemakan Latihan Murid' },
+            { id: '4.4', code: '4.4', section: '4. PENTAKSIRAN', title: 'Data & Analisis Headcount (jika berkaitan)' },
+            { id: '4.5', code: '4.5', section: '4. PENTAKSIRAN', title: 'Analisis & Laporan Post Mortem Peperiksaan Dalaman' },
+            { id: '4.6', code: '4.6', section: '4. PENTAKSIRAN', title: 'Analisis & Laporan Post Mortem Peperiksaan Awam' },
+            { id: '4.7', code: '4.7', section: '4. PENTAKSIRAN', title: 'Pelaporan & Analisis Pentaksiran Bilik Darjah (PBD)' },
+            { id: '4.8', code: '4.8', section: '4. PENTAKSIRAN', title: 'Kerja Kursus (Jika berkaitan)' },
+            { id: '4.9', code: '4.9', section: '4. PENTAKSIRAN', title: 'Koleksi Soalan Peperiksaan & Jadual Spesifikasi Ujian (JSU)' },
+            { id: '4.10', code: '4.10', section: '4. PENTAKSIRAN', title: 'Koleksi Modul Pembelajaran (jika berkaitan)' },
+            { id: '5.1', code: '5.1', section: '5. PERANCANGAN STRATEGIK', title: 'Pelan Taktikal Panitia' },
+            { id: '5.2', code: '5.2', section: '5. PERANCANGAN STRATEGIK', title: 'Pelan Operasi Panitia' },
+            { id: '5.3', code: '5.3', section: '5. PERANCANGAN STRATEGIK', title: 'PInTaS Sekolah TS25 (jika berkaitan)' },
+            { id: '5.4', code: '5.4', section: '5. PERANCANGAN STRATEGIK', title: 'Perancangan Program Peningkatan Profesionalisme Guru' },
+            { id: '5.5', code: '5.5', section: '5. PERANCANGAN STRATEGIK', title: 'Pelaporan Program Peningkatan Profesionalisme Guru' },
+            { id: '5.6', code: '5.6', section: '5. PERANCANGAN STRATEGIK', title: 'Perancangan Program Peningkatan Akademik Murid' },
+            { id: '5.7', code: '5.7', section: '5. PERANCANGAN STRATEGIK', title: 'Pelaporan Program Peningkatan Akademik Murid' },
+            { id: '6.1', code: '6.1', section: '6. KEWANGAN', title: 'Agihan Per Capita Grant (PCG) Mata Pelajaran' },
+            { id: '6.2', code: '6.2', section: '6. KEWANGAN', title: 'Perancangan Perbelanjaan' },
+            { id: '6.3', code: '6.3', section: '6. KEWANGAN', title: 'Nota Minta' },
+            { id: '6.4', code: '6.4', section: '6. KEWANGAN', title: 'Invois' },
+            { id: '6.5', code: '6.5', section: '6. KEWANGAN', title: 'Rekod Inventori' },
+            { id: '6.6', code: '6.6', section: '6. KEWANGAN', title: 'Rekod Penggunaan Sumber Pendidikan' }
+        ];
+
+        let allYearsData = JSON.parse(localStorage.getItem('skpayang_multi_years')) || {};
+
+        function initYearData(yr) {
+            if (!allYearsData[yr]) {
+                allYearsData[yr] = {};
+                panitiaList.forEach(p => {
+                    allYearsData[yr][p.id] = { driveLink: '', instruments: {} };
+                    instrumenList.forEach(inst => {
+                        allYearsData[yr][p.id].instruments[inst.id] = { checked: false, url: '' };
+                    });
+                });
+            }
+        }
+
+        initYearData('2026');
+        initYearData('2027');
+        initYearData('2028');
+
+        let activePanitiaId = null;
+        let activeInstId = null;
+        let chartInstanceYear = null;
+        let chartInstanceTrend = null;
+
+        function switchYear(yr) {
+            selectedYear = yr;
+            initYearData(selectedYear);
+
+            ['2026', '2027', '2028'].forEach(y => {
+                const btn = document.getElementById(`btnYear${y}`);
+                if (y === yr) {
+                    btn.className = "py-1.5 rounded-md text-xs font-extrabold transition-all duration-200 bg-amber-500 text-slate-950 shadow";
+                } else {
+                    btn.className = "py-1.5 rounded-md text-xs font-extrabold transition-all duration-200 text-slate-400 hover:text-white";
+                }
+            });
+
+            renderGrid();
+            fetchGoogleSheetData();
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const strHours = String(hours).padStart(2, '0');
+
+            document.getElementById('liveClock').textContent = `${strHours}:${minutes}:${seconds} ${ampm}`;
+
+            const days = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
+            
+            document.getElementById('liveDate').textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        }
+
+        async function fetchGoogleSheetData() {
+            if (!SCRIPT_URL) return;
+            
+            const syncStatus = document.getElementById('syncStatus');
+            syncStatus.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-amber-400"></i> Memuatkan ${selectedYear}...`;
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?tahun=${selectedYear}`);
+                const json = await response.json();
+
+                if (json.status === 'success' && json.data) {
+                    panitiaList.forEach(p => {
+                        if (json.data[p.id]) {
+                            allYearsData[selectedYear][p.id].driveLink = json.data[p.id].driveLink || '';
+                            if (json.data[p.id].instruments) {
+                                instrumenList.forEach(inst => {
+                                    const val = json.data[p.id].instruments[inst.id];
+                                    if (val) allYearsData[selectedYear][p.id].instruments[inst.id] = val;
+                                });
+                            }
+                        }
+                    });
+                    localStorage.setItem('skpayang_multi_years', JSON.stringify(allYearsData));
+                    syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Disinkroni (${selectedYear})`;
+                    renderGrid();
+                    if (activePanitiaId) {
+                        updateDriveLinkDisplay();
+                        renderChecklist();
+                    }
+                }
+            } catch (err) {
+                console.error("Gagal muat data Google Sheet:", err);
+                syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Mod Lokal (${selectedYear})`;
+            }
+        }
+
+        async function fetchAllYearsForAnalytics() {
+            if (!SCRIPT_URL) return;
+            const years = ['2026', '2027', '2028'];
+            for (const yr of years) {
+                try {
+                    const response = await fetch(`${SCRIPT_URL}?tahun=${yr}`);
+                    const json = await response.json();
+                    if (json.status === 'success' && json.data) {
+                        panitiaList.forEach(p => {
+                            if (json.data[p.id]) {
+                                allYearsData[yr][p.id].driveLink = json.data[p.id].driveLink || '';
+                                if (json.data[p.id].instruments) {
+                                    instrumenList.forEach(inst => {
+                                        const val = json.data[p.id].instruments[inst.id];
+                                        if (val) allYearsData[yr][p.id].instruments[inst.id] = val;
+                                    });
+                                }
+                            }
+                        });
+                    }
+                } catch (e) { console.error(`Error loading year ${yr}:`, e); }
+            }
+            localStorage.setItem('skpayang_multi_years', JSON.stringify(allYearsData));
+        }
+
+        function getPanitiaPercentage(yr, pId) {
+            const totalItems = instrumenList.length;
+            let tickedCount = 0;
+            instrumenList.forEach(inst => {
+                const item = allYearsData[yr] && allYearsData[yr][pId] && allYearsData[yr][pId].instruments[inst.id];
+                if (item && item.checked) tickedCount++;
+            });
+            return Math.round((tickedCount / totalItems) * 100);
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('panitiaGrid');
+            grid.innerHTML = '';
+
+            panitiaList.forEach(p => {
+                const percent = getPanitiaPercentage(selectedYear, p.id);
+
+                const cardHtml = `
+                    <div onclick="openModal('${p.id}')" 
+                         class="group relative bg-slate-900/80 hover:bg-white/20 border border-amber-500/40 hover:border-amber-300 p-3.5 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105 shadow-md hover:shadow-gold-glow flex items-center space-x-3.5 overflow-hidden">
+                        
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-400 group-hover:bg-amber-300 transition-colors"></div>
+
+                        <div class="relative flex-shrink-0 ml-1">
+                            <img src="${p.img}" alt="${p.kp}" class="w-14 h-14 rounded-full object-cover object-top border-2 border-amber-400 shadow-md bg-slate-900">
+                            <span class="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 text-[9px] font-extrabold px-1.5 py-0.2 rounded-full border border-black shadow">
+                                ${percent}%
+                            </span>
+                        </div>
+
+                        <div class="overflow-hidden flex-grow">
+                            <h3 class="text-sm font-bold text-white group-hover:text-amber-300 transition-colors truncate">${p.name}</h3>
+                            <p class="text-[11px] text-slate-300 truncate font-medium mt-0.5">${p.kp}</p>
+                            
+                            <div class="w-full bg-slate-950 rounded-full h-1.5 mt-2 border border-white/10 overflow-hidden">
+                                <div class="bg-gradient-to-r from-amber-500 to-emerald-400 h-full transition-all duration-300" style="width: ${percent}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="text-slate-500 group-hover:text-amber-400 transition-colors pr-1">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        async function openAnalyticsModal() {
+            const modal = document.getElementById('analyticsModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 10);
+
+            await fetchAllYearsForAnalytics();
+            renderAnalyticsCharts();
+        }
+
+        function closeAnalyticsModal() {
+            const modal = document.getElementById('analyticsModal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function renderAnalyticsCharts() {
+            document.querySelectorAll('.analyticsYearTxt').forEach(el => el.textContent = selectedYear);
+
+            const panitiaNames = panitiaList.map(p => p.name);
+            const activeYearPercents = panitiaList.map(p => getPanitiaPercentage(selectedYear, p.id));
+
+            const sum = activeYearPercents.reduce((a, b) => a + b, 0);
+            const avg = Math.round(sum / panitiaList.length);
+            document.getElementById('statAvgSchool').textContent = `${avg}%`;
+            document.getElementById('statAvgBar').style.width = `${avg}%`;
+
+            let maxPct = -1;
+            let minPct = 101;
+            let topP = '-';
+            let lowP = '-';
+
+            panitiaList.forEach((p, idx) => {
+                const pct = activeYearPercents[idx];
+                if (pct > maxPct) { maxPct = pct; topP = p.name; }
+                if (pct < minPct) { minPct = pct; lowP = p.name; }
+            });
+
+            document.getElementById('statTopPanitia').textContent = topP;
+            document.getElementById('statTopPercent').textContent = `${maxPct}% Selesai`;
+
+            document.getElementById('statLowPanitia').textContent = lowP;
+            document.getElementById('statLowPercent').textContent = `${minPct}% Selesai`;
+
+            const ctxYear = document.getElementById('chartYearCurrent').getContext('2d');
+            if (chartInstanceYear) chartInstanceYear.destroy();
+
+            chartInstanceYear = new Chart(ctxYear, {
+                type: 'bar',
+                data: {
+                    labels: panitiaNames,
+                    datasets: [{
+                        label: `Peratus Kemaskini Fail (${selectedYear})`,
+                        data: activeYearPercents,
+                        backgroundColor: activeYearPercents.map(pct => 
+                            pct >= 80 ? 'rgba(16, 185, 129, 0.85)' : 
+                            pct >= 40 ? 'rgba(245, 158, 11, 0.85)' : 'rgba(239, 68, 68, 0.85)'
+                        ),
+                        borderColor: '#fbbf24',
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans' } },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#cbd5e1', font: { size: 10, family: 'Plus Jakarta Sans' } },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#fbbf24', font: { family: 'Plus Jakarta Sans', weight: 'bold' } } }
+                    }
+                }
+            });
+
+            const p2026 = panitiaList.map(p => getPanitiaPercentage('2026', p.id));
+            const p2027 = panitiaList.map(p => getPanitiaPercentage('2027', p.id));
+            const p2028 = panitiaList.map(p => getPanitiaPercentage('2028', p.id));
+
+            const ctxTrend = document.getElementById('chartMultiYearTrend').getContext('2d');
+            if (chartInstanceTrend) chartInstanceTrend.destroy();
+
+            chartInstanceTrend = new Chart(ctxTrend, {
+                type: 'bar',
+                data: {
+                    labels: panitiaNames,
+                    datasets: [
+                        { label: 'Sesi 2026', data: p2026, backgroundColor: 'rgba(245, 158, 11, 0.8)', borderRadius: 4 },
+                        { label: 'Sesi 2027', data: p2027, backgroundColor: 'rgba(16, 185, 129, 0.8)', borderRadius: 4 },
+                        { label: 'Sesi 2028', data: p2028, backgroundColor: 'rgba(6, 182, 212, 0.8)', borderRadius: 4 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans' } },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#cbd5e1', font: { size: 10, family: 'Plus Jakarta Sans' } },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#ffffff', font: { family: 'Plus Jakarta Sans' } } }
+                    }
+                }
+            });
+        }
+
+        function openModal(id) {
+            activePanitiaId = id;
+            const p = panitiaList.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('modalTitle').textContent = p.name;
+            document.getElementById('modalKpName').textContent = `Ketua Panitia: ${p.kp}`;
+            document.getElementById('modalKpImg').src = p.img;
+            document.getElementById('modalYearBadge').textContent = selectedYear;
+            document.getElementById('modalProgressYearText').textContent = selectedYear;
+
+            updateDriveLinkDisplay();
+            renderChecklist();
+
+            const modal = document.getElementById('panitiaModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('panitiaModal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                activePanitiaId = null;
+            }, 300);
+        }
+
+        function updateDriveLinkDisplay() {
+            if (!activePanitiaId) return;
+            const driveLink = allYearsData[selectedYear][activePanitiaId].driveLink || '';
+            const btnDrive = document.getElementById('modalDriveLink');
+            const statusTxt = document.getElementById('driveStatusText');
+
+            if (driveLink) {
+                btnDrive.href = driveLink;
+                btnDrive.classList.remove('hidden');
+                statusTxt.textContent = `Status (${selectedYear}): Terhubung dengan Google Drive.`;
+                statusTxt.className = "text-[11px] font-semibold text-emerald-400";
+            } else {
+                btnDrive.href = "#";
+                btnDrive.classList.add('hidden');
+                statusTxt.textContent = `Status (${selectedYear}): Pautan belum ditetapkan. Klik 'Set Link Drive' untuk menghubungkan.`;
+                statusTxt.className = "text-[11px] font-semibold text-amber-300/80 italic";
+            }
+        }
+
+        function openDriveEditModal() {
+            if (!activePanitiaId) return;
+            document.getElementById('driveModalYear').textContent = selectedYear;
+            document.getElementById('driveInputUrl').value = allYearsData[selectedYear][activePanitiaId].driveLink || '';
+            const modal = document.getElementById('driveEditModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeDriveEditModal() {
+            const modal = document.getElementById('driveEditModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        async function saveDriveLinkInduk() {
+            if (!activePanitiaId) return;
+            const url = document.getElementById('driveInputUrl').value.trim();
+            allYearsData[selectedYear][activePanitiaId].driveLink = url;
+
+            localStorage.setItem('skpayang_multi_years', JSON.stringify(allYearsData));
+            updateDriveLinkDisplay();
+            closeDriveEditModal();
+
+            if (!SCRIPT_URL) return;
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        tahun: selectedYear,
+                        panitiaId: activePanitiaId,
+                        action: 'updateDriveLink',
+                        driveLink: url
+                    })
+                });
+            } catch (err) {
+                console.error("Ralat simpan Drive Link:", err);
+            }
+        }
+
+        function renderChecklist() {
+            if (!activePanitiaId) return;
+            const container = document.getElementById('checklistContainer');
+            container.innerHTML = '';
+
+            let tickedCount = 0;
+            let currentSection = '';
+
+            instrumenList.forEach(inst => {
+                const itemState = allYearsData[selectedYear][activePanitiaId].instruments[inst.id] || { checked: false, url: '' };
+                const isChecked = itemState.checked || false;
+                const evidenUrl = itemState.url || '';
+
+                if (isChecked) tickedCount++;
+
+                if (inst.section !== currentSection) {
+                    currentSection = inst.section;
+                    const secHeader = document.createElement('div');
+                    secHeader.className = "text-[11px] font-bold text-amber-400 pt-3 pb-1.5 border-b border-amber-500/30 uppercase tracking-wide flex items-center gap-1.5";
+                    secHeader.innerHTML = `<i class="fa-solid fa-folder-open text-amber-400"></i> ${currentSection}`;
+                    container.appendChild(secHeader);
+                }
+
+                const row = document.createElement('div');
+                row.className = `flex flex-col sm:flex-row sm:items-center justify-between p-2.5 rounded-xl border gap-2 transition-all ${
+                    isChecked 
+                    ? 'bg-amber-500/15 border-amber-500/60 text-amber-200' 
+                    : 'bg-black/40 border-white/10 hover:border-amber-500/30 text-slate-300'
+                }`;
+
+                let evidenBtnHtml = '';
+                if (evidenUrl) {
+                    evidenBtnHtml = `
+                        <div class="flex items-center gap-1 shrink-0">
+                            <a href="${evidenUrl}" target="_blank" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold text-[10px] px-2.5 py-1 rounded-lg flex items-center gap-1 shadow">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Lihat Eviden
+                            </a>
+                            <button onclick="openEvidenModal('${inst.id}')" title="Edit Eviden" class="text-slate-400 hover:text-amber-400 p-1 text-xs">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    evidenBtnHtml = `
+                        <button onclick="openEvidenModal('${inst.id}')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-amber-500/30 hover:text-amber-300 font-bold text-[10px] px-2 py-1 rounded-lg flex items-center gap-1 shrink-0 transition-colors">
+                            <i class="fa-solid fa-plus text-amber-400"></i> Eviden
+                        </button>
+                    `;
+                }
+
+                row.innerHTML = `
+                    <div class="flex items-center space-x-3 pr-2">
+                        <span class="text-[10px] font-extrabold text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/30 shrink-0">
+                            ${inst.code}
+                        </span>
+                        <span class="text-xs font-semibold leading-relaxed">${inst.title}</span>
+                    </div>
+                    <div class="flex items-center justify-end space-x-3 shrink-0">
+                        ${evidenBtnHtml}
+                        <input type="checkbox" ${isChecked ? 'checked' : ''} 
+                               onchange="toggleCheck('${activePanitiaId}', '${inst.id}', this.checked)"
+                               class="w-4 h-4 accent-amber-400 rounded cursor-pointer shrink-0">
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+
+            const total = instrumenList.length;
+            const percent = Math.round((tickedCount / total) * 100);
+            document.getElementById('modalProgressText').textContent = `${percent}%`;
+            document.getElementById('modalProgressBar').style.width = `${percent}%`;
+
+            renderGrid();
+        }
+
+        function openEvidenModal(instId) {
+            activeInstId = instId;
+            const inst = instrumenList.find(i => i.id === instId);
+            const itemState = allYearsData[selectedYear][activePanitiaId].instruments[instId] || { checked: false, url: '' };
+
+            document.getElementById('evidenItemTitle').textContent = `[${selectedYear} | Item ${inst.code}] ${inst.title}`;
+            document.getElementById('evidenInputUrl').value = itemState.url || '';
+            
+            const btnDel = document.getElementById('btnDeleteEviden');
+            if (itemState.url) btnDel.classList.remove('hidden');
+            else btnDel.classList.add('hidden');
+
+            const modal = document.getElementById('evidenModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeEvidenModal() {
+            const modal = document.getElementById('evidenModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+            activeInstId = null;
+        }
+
+        function saveEvidenUrl() {
+            if (!activePanitiaId || !activeInstId) return;
+            const url = document.getElementById('evidenInputUrl').value.trim();
+            const isChecked = allYearsData[selectedYear][activePanitiaId].instruments[activeInstId].checked || false;
+
+            allYearsData[selectedYear][activePanitiaId].instruments[activeInstId] = { checked: isChecked, url: url };
+
+            syncItemToSheet(activePanitiaId, activeInstId, isChecked, url);
+            closeEvidenModal();
+            renderChecklist();
+        }
+
+        function deleteEvidenUrl() {
+            document.getElementById('evidenInputUrl').value = '';
+            saveEvidenUrl();
+        }
+
+        function toggleCheck(panitiaId, instId, isChecked) {
+            const currentUrl = allYearsData[selectedYear][panitiaId].instruments[instId].url || '';
+            allYearsData[selectedYear][panitiaId].instruments[instId] = { checked: isChecked, url: currentUrl };
+
+            syncItemToSheet(panitiaId, instId, isChecked, currentUrl);
+            renderChecklist();
+        }
+
+        async function syncItemToSheet(panitiaId, instId, isChecked, evidenUrl) {
+            localStorage.setItem('skpayang_multi_years', JSON.stringify(allYearsData));
+
+            if (!SCRIPT_URL) return;
+
+            const syncStatus = document.getElementById('syncStatus');
+            syncStatus.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-amber-400"></i> Menyimpan (${selectedYear})...`;
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        tahun: selectedYear,
+                        panitiaId: panitiaId,
+                        action: 'updateItem',
+                        instId: instId,
+                        isChecked: isChecked,
+                        evidenUrl: evidenUrl
+                    })
+                });
+
+                const res = await response.json();
+                
+                if (res.status === 'success') {
+                    syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Tersimpan (${selectedYear})`;
+                } else {
+                    syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-400"></span> ${res.message}`;
+                }
+            } catch (err) {
+                console.error("Gagal simpan ke Google Sheet:", err);
+                syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500"></span> Ralat Sync`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGrid();
+            fetchGoogleSheetData();
+            
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+        });
+    </script>
+</body>
+</html>
