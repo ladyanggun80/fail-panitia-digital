@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     
     <!-- PAKSA PAPARAN DESKTOP PADA TELEFON ANDROID / IOS (WIDTH 1280px) -->
-    <meta name="viewport" content="width=device, initial-scale=0.3, minimum-scale=0.25, maximum-scale=3.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>e-Portal Fail Panitia Digital - SK PAYANG</title>
     
@@ -34,16 +34,13 @@
                             800: '#420919',
                         },
                         navy: {
-                            800: '#1e293b',
                             900: '#0a0f1d',
                             950: '#050811',
-                            light: '#1e3a5f'
                         }
                     },
                     boxShadow: {
                         'gold-glow': '0 0 15px rgba(245, 158, 11, 0.3)',
                         'gold-glow-lg': '0 0 25px rgba(245, 158, 11, 0.5)',
-                        'navy-glow': '0 0 20px rgba(56, 189, 248, 0.4)',
                     }
                 }
             }
@@ -79,7 +76,7 @@
     </div>
 
     <!-- GLASS CONTAINER UTAMA (FIXED DESKTOP WIDTH 1280px) -->
-    <div class="relative z-10 w-[full] max-w-full mx-auto p-4 lg:p-6 my-auto">
+    <div class="relative z-10 w-full mx-auto p-4 lg:p-6 my-auto">
         <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl shadow-black/90">
             
             <!-- BENTO GRID LAYOUT -->
@@ -392,7 +389,6 @@
 
         let selectedYear = '2026';
 
-        // 12 SENARAI PANITIA (PENDIDIKAN MORAL DIPINDAHKAN KE AKHIR - KAD KE-12)
         const panitiaList = [
             { id: 'bm', name: 'Bahasa Melayu', kp: 'Pn Yati Nur Fatihah Tikson', img: 'https://i.postimg.cc/pXWTyqqF/KP-BM.jpg' },
             { id: 'bi', name: 'Bahasa Inggeris', kp: 'Pn Bibiana Anthony Mayoh', img: 'https://i.postimg.cc/TYdwhCCW/KP-BI.jpg' },
@@ -400,12 +396,12 @@
             { id: 'sc', name: 'Sains', kp: 'Cik Salha Siladjan', img: 'https://i.postimg.cc/Tw10RrBm/KP-SC.jpg' },
             { id: 'sej', name: 'Sejarah', kp: 'Pn Darwina Mathew', img: 'https://i.postimg.cc/KzbNM6Kj/KP-SEJ.jpg' },
             { id: 'pai', name: 'Pendidikan Agama Islam', kp: 'Pn Aslina Ali', img: 'https://i.postimg.cc/j5R5NcRS/KP-PAI.jpg' },
+            { id: 'moral', name: 'Pendidikan Moral', kp: 'Guru Berkaitan / Guru Moral', img: 'https://i.postimg.cc/sDS7znHY/LOGO-SKP.jpg' },
             { id: 'pjk', name: 'Pendidikan Jasmani & Kesihatan', kp: 'En Aslan Ardani', img: 'https://i.postimg.cc/L419XGtC/KP-PJK.jpg' },
             { id: 'psv', name: 'Pendidikan Seni Visual', kp: 'Pn Rowahni Abu Bakar', img: 'https://i.postimg.cc/c15j8JmN/KP-PSV.jpg' },
             { id: 'muzik', name: 'Pendidikan Muzik', kp: 'En Rosli Pitri', img: 'https://i.postimg.cc/FzzhVs1Q/KP-MZZ.jpg' },
             { id: 'ba', name: 'Bahasa Arab', kp: 'Cik Aisyah Najihah Abd Raisham', img: 'https://i.postimg.cc/3NRcckXT/KP-BA.jpg' },
-            { id: 'rbt', name: 'Reka Bentuk & Teknologi', kp: 'Cik Nir Shafiqah Harun', img: 'https://i.postimg.cc/KztWX7TJ/KP-RBT.jpg' },
-            { id: 'moral', name: 'Pendidikan Moral', kp: 'Guru Berkaitan / Guru Moral', img: 'https://i.postimg.cc/sDS7znHY/LOGO-SKP.jpg' }
+            { id: 'rbt', name: 'Reka Bentuk & Teknologi', kp: 'Cik Nir Shafiqah Harun', img: 'https://i.postimg.cc/KztWX7TJ/KP-RBT.jpg' }
         ];
 
         const instrumenList = [
@@ -582,47 +578,36 @@
             return Math.round((tickedCount / totalItems) * 100);
         }
 
-        // RENDER GRID CARDS (DENGAN KESAN WARNA LIGHT NAVY BLUE BILA DIKLIK / DI-HOVER)
         function renderGrid() {
             const grid = document.getElementById('panitiaGrid');
             grid.innerHTML = '';
 
             panitiaList.forEach(p => {
                 const percent = getPanitiaPercentage(selectedYear, p.id);
-                const isActive = activePanitiaId === p.id;
-
-                // KELAS WARNA LIGHT NAVY BLUE BILA HOVER / DIKLIK (ACTIVE)
-                const cardStyleClass = isActive 
-                    ? 'bg-blue-900/90 border-cyan-400 ring-2 ring-cyan-400/50 shadow-navy-glow' 
-                    : 'bg-slate-900/80 hover:bg-blue-900/60 border-amber-500/40 hover:border-cyan-400 hover:shadow-navy-glow';
 
                 const cardHtml = `
                     <div onclick="openModal('${p.id}')" 
-                         class="group relative ${cardStyleClass} p-3.5 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105 shadow-md flex items-center space-x-3.5 overflow-hidden">
+                         class="group relative bg-slate-900/80 hover:bg-white/20 border border-amber-500/40 hover:border-amber-300 p-3.5 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105 shadow-md hover:shadow-gold-glow flex items-center space-x-3.5 overflow-hidden">
                         
-                        <!-- Glowing Line Left -->
-                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-400 group-hover:bg-cyan-400 transition-colors"></div>
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-400 group-hover:bg-amber-300 transition-colors"></div>
 
-                        <!-- Gambar KP Bulat Penuh -->
                         <div class="relative flex-shrink-0 ml-1">
-                            <img src="${p.img}" alt="${p.kp}" class="w-14 h-14 rounded-full object-cover object-top border-2 border-amber-400 group-hover:border-cyan-300 shadow-md bg-slate-900 transition-colors">
-                            <span class="absolute -bottom-1 -right-1 bg-amber-500 group-hover:bg-cyan-400 text-slate-950 text-[9px] font-extrabold px-1.5 py-0.2 rounded-full border border-black shadow transition-colors">
+                            <img src="${p.img}" alt="${p.kp}" class="w-14 h-14 rounded-full object-cover object-top border-2 border-amber-400 shadow-md bg-slate-900">
+                            <span class="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 text-[9px] font-extrabold px-1.5 py-0.2 rounded-full border border-black shadow">
                                 ${percent}%
                             </span>
                         </div>
 
-                        <!-- Info Panitia -->
                         <div class="overflow-hidden flex-grow">
-                            <h3 class="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors truncate">${p.name}</h3>
+                            <h3 class="text-sm font-bold text-white group-hover:text-amber-300 transition-colors truncate">${p.name}</h3>
                             <p class="text-[11px] text-slate-300 truncate font-medium mt-0.5">${p.kp}</p>
                             
-                            <!-- Mini Progress Bar -->
                             <div class="w-full bg-slate-950 rounded-full h-1.5 mt-2 border border-white/10 overflow-hidden">
-                                <div class="bg-gradient-to-r from-amber-500 to-emerald-400 group-hover:from-cyan-400 group-hover:to-teal-300 h-full transition-all duration-300" style="width: ${percent}%"></div>
+                                <div class="bg-gradient-to-r from-amber-500 to-emerald-400 h-full transition-all duration-300" style="width: ${percent}%"></div>
                             </div>
                         </div>
 
-                        <div class="text-slate-500 group-hover:text-cyan-300 transition-colors pr-1">
+                        <div class="text-slate-500 group-hover:text-amber-400 transition-colors pr-1">
                             <i class="fa-solid fa-chevron-right text-xs"></i>
                         </div>
                     </div>
@@ -761,8 +746,6 @@
 
         function openModal(id) {
             activePanitiaId = id;
-            renderGrid(); // Refresh grid warna kad aktif
-
             const p = panitiaList.find(item => item.id === id);
             if (!p) return;
 
@@ -792,7 +775,6 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
                 activePanitiaId = null;
-                renderGrid(); // Reset warna kad aktif
             }, 300);
         }
 
