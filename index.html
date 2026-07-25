@@ -862,13 +862,16 @@
             try {
               await fetch(SCRIPT_URL, {
     method: 'POST',
-    body: new URLSearchParams({
+    cache: 'no-store',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
         tahun: selectedYear,
         panitiaId: activePanitiaId,
         action: 'updateDriveLink',
         driveLink: url
-    }),
-    redirect: 'follow'
+    })
 });
             } catch (err) {
                 console.error("Ralat simpan Drive Link:", err);
@@ -1010,15 +1013,18 @@
             try {
                const response = await fetch(SCRIPT_URL, {
     method: 'POST',
-    body: new URLSearchParams({
+    cache: 'no-store',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
         tahun: selectedYear,
         panitiaId: panitiaId,
         action: 'updateItem',
         instId: instId,
-        isChecked: String(isChecked),
-        evidenUrl: evidenUrl || ''
-    }),
-    redirect: 'follow'
+        isChecked: isChecked,
+        evidenUrl: evidenUrl
+    })
 });
 
                 const res = await response.json();
