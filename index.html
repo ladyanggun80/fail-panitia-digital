@@ -860,15 +860,18 @@
 
             if (!SCRIPT_URL) return;
             try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        tahun: selectedYear,
-                        panitiaId: activePanitiaId,
-                        action: 'updateDriveLink',
-                        driveLink: url
-                    })
-                });
+              await fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        tahun: selectedYear,
+        panitiaId: activePanitiaId,
+        action: 'updateDriveLink',
+        driveLink: url
+    })
+});
             } catch (err) {
                 console.error("Ralat simpan Drive Link:", err);
             }
@@ -1007,17 +1010,20 @@
             syncStatus.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-amber-400"></i> Menyimpan (${selectedYear})...`;
 
             try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        tahun: selectedYear,
-                        panitiaId: panitiaId,
-                        action: 'updateItem',
-                        instId: instId,
-                        isChecked: isChecked,
-                        evidenUrl: evidenUrl
-                    })
-                });
+               const response = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        tahun: selectedYear,
+        panitiaId: panitiaId,
+        action: 'updateItem',
+        instId: instId,
+        isChecked: isChecked,
+        evidenUrl: evidenUrl
+    })
+});
 
                 const res = await response.json();
                 
