@@ -3,27 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA Manifest & Theme -->
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8b0000">
-<link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="theme-color" content="#8b0000">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
     <title>e-Portal Fail Panitia Digital - SK PAYANG</title>
     
-    <!-- Kod Ikon Favicon Logo SKP -->
-    <!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
-
-<!-- Theme Color -->
-<meta name="theme-color" content="#8b0000">
-
-<!-- Apple -->
-<link rel="apple-touch-icon" href="icon-192.png">
-
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-
-<title>e-Portal Fail Panitia Digital - SK PAYANG</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Plus Jakarta Sans -->
@@ -179,7 +171,7 @@
                         </div>
                         <div class="flex justify-between items-center text-slate-300">
                             <span><i class="fa-solid fa-cloud text-emerald-400 mr-1.5"></i>Google Sheet Sync:</span>
-                            <span id="syncStatus" class="text-emerald-400 font-bold flex items-center gap-1">
+                            <span id="syncStatus" class="text-emerald-400 font-bold flex items-center gap-1 cursor-pointer" onclick="fetchGoogleSheetData(true)" title="Klik untuk Muat Semula Data Sahih">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Terhubung
                             </span>
                         </div>
@@ -332,7 +324,7 @@
                         <span id="modalProgressText" class="text-xs sm:text-sm font-extrabold text-amber-400">0%</span>
                     </div>
                     <div class="w-full bg-slate-950 rounded-full h-3 overflow-hidden p-0.5 border border-amber-500/30">
-                        <div id="modalProgressBar" class="bg-gradient-to-r from-amber-500 to-emerald-400 h-full rounded-full transition-all duration-500 w-0"></div>
+                        <div id="modalProgressBar" class="bg-gradient-to-r from-amber-500 to-emerald-400 h-full transition-all duration-500 w-0"></div>
                     </div>
                 </div>
 
@@ -471,13 +463,20 @@
         function initYearData(yr) {
             if (!allYearsData[yr]) {
                 allYearsData[yr] = {};
-                panitiaList.forEach(p => {
-                    allYearsData[yr][p.id] = { driveLink: '', instruments: {} };
-                    instrumenList.forEach(inst => {
-                        allYearsData[yr][p.id].instruments[inst.id] = { checked: false, url: '' };
-                    });
-                });
             }
+            panitiaList.forEach(p => {
+                if (!allYearsData[yr][p.id]) {
+                    allYearsData[yr][p.id] = { driveLink: '', instruments: {} };
+                }
+                if (!allYearsData[yr][p.id].instruments) {
+                    allYearsData[yr][p.id].instruments = {};
+                }
+                instrumenList.forEach(inst => {
+                    if (!allYearsData[yr][p.id].instruments[inst.id]) {
+                        allYearsData[yr][p.id].instruments[inst.id] = { checked: false, url: '' };
+                    }
+                });
+            });
         }
 
         initYearData('2026');
@@ -503,7 +502,7 @@
             });
 
             renderGrid();
-            fetchGoogleSheetData();
+            fetchGoogleSheetData(true);
         }
 
         function updateLiveClock() {
@@ -524,24 +523,32 @@
             document.getElementById('liveDate').textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
         }
 
-        async function fetchGoogleSheetData() {
+        // FETCH DATA REAL-TIME DARI GOOGLE SHEET (KAPASITI TERUS / CACHE-BUSTING)
+        async function fetchGoogleSheetData(forceRefresh = false) {
             if (!SCRIPT_URL) return;
             
             const syncStatus = document.getElementById('syncStatus');
             syncStatus.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-amber-400"></i> Memuatkan ${selectedYear}...`;
 
             try {
-                const response = await fetch(`${SCRIPT_URL}?tahun=${selectedYear}`);
+                // Tambah timestamp & cache: 'no-store' supaya data di telefon & desktop sentiasa LIVE & SAMA!
+                const cacheBuster = new Date().getTime();
+                const response = await fetch(`${SCRIPT_URL}?tahun=${selectedYear}&_cb=${cacheBuster}`, {
+                    cache: 'no-store'
+                });
                 const json = await response.json();
 
                 if (json.status === 'success' && json.data) {
+                    initYearData(selectedYear);
                     panitiaList.forEach(p => {
                         if (json.data[p.id]) {
                             allYearsData[selectedYear][p.id].driveLink = json.data[p.id].driveLink || '';
                             if (json.data[p.id].instruments) {
                                 instrumenList.forEach(inst => {
                                     const val = json.data[p.id].instruments[inst.id];
-                                    if (val) allYearsData[selectedYear][p.id].instruments[inst.id] = val;
+                                    if (val !== undefined) {
+                                        allYearsData[selectedYear][p.id].instruments[inst.id] = val;
+                                    }
                                 });
                             }
                         }
@@ -563,18 +570,22 @@
         async function fetchAllYearsForAnalytics() {
             if (!SCRIPT_URL) return;
             const years = ['2026', '2027', '2028'];
+            const cacheBuster = new Date().getTime();
             for (const yr of years) {
                 try {
-                    const response = await fetch(`${SCRIPT_URL}?tahun=${yr}`);
+                    const response = await fetch(`${SCRIPT_URL}?tahun=${yr}&_cb=${cacheBuster}`, { cache: 'no-store' });
                     const json = await response.json();
                     if (json.status === 'success' && json.data) {
+                        initYearData(yr);
                         panitiaList.forEach(p => {
                             if (json.data[p.id]) {
                                 allYearsData[yr][p.id].driveLink = json.data[p.id].driveLink || '';
                                 if (json.data[p.id].instruments) {
                                     instrumenList.forEach(inst => {
                                         const val = json.data[p.id].instruments[inst.id];
-                                        if (val) allYearsData[yr][p.id].instruments[inst.id] = val;
+                                        if (val !== undefined) {
+                                            allYearsData[yr][p.id].instruments[inst.id] = val;
+                                        }
                                     });
                                 }
                             }
@@ -604,7 +615,6 @@
                 const percent = getPanitiaPercentage(selectedYear, p.id);
                 const isActive = activePanitiaId === p.id;
 
-                // KELAS WARNA LIGHT NAVY BLUE BILA HOVER / DIKLIK (ACTIVE)
                 const cardStyleClass = isActive 
                     ? 'bg-blue-900/90 border-cyan-400 ring-2 ring-cyan-400/50 shadow-navy-glow' 
                     : 'bg-slate-900/80 hover:bg-blue-900/60 border-amber-500/40 hover:border-cyan-400 hover:shadow-navy-glow';
@@ -613,10 +623,8 @@
                     <div onclick="openModal('${p.id}')" 
                          class="group relative ${cardStyleClass} p-3.5 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105 shadow-md flex items-center space-x-3.5 overflow-hidden">
                         
-                        <!-- Glowing Line Left -->
                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-400 group-hover:bg-cyan-400 transition-colors"></div>
 
-                        <!-- Gambar KP Bulat Penuh -->
                         <div class="relative flex-shrink-0 ml-1">
                             <img src="${p.img}" alt="${p.kp}" class="w-14 h-14 rounded-full object-cover object-top border-2 border-amber-400 group-hover:border-cyan-300 shadow-md bg-slate-900 transition-colors">
                             <span class="absolute -bottom-1 -right-1 bg-amber-500 group-hover:bg-cyan-400 text-slate-950 text-[9px] font-extrabold px-1.5 py-0.2 rounded-full border border-black shadow transition-colors">
@@ -624,12 +632,10 @@
                             </span>
                         </div>
 
-                        <!-- Info Panitia -->
                         <div class="overflow-hidden flex-grow">
                             <h3 class="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors truncate">${p.name}</h3>
                             <p class="text-[11px] text-slate-300 truncate font-medium mt-0.5">${p.kp}</p>
                             
-                            <!-- Mini Progress Bar -->
                             <div class="w-full bg-slate-950 rounded-full h-1.5 mt-2 border border-white/10 overflow-hidden">
                                 <div class="bg-gradient-to-r from-amber-500 to-emerald-400 group-hover:from-cyan-400 group-hover:to-teal-300 h-full transition-all duration-300" style="width: ${percent}%"></div>
                             </div>
@@ -1026,20 +1032,31 @@
             }
         }
 
+        // AUTOMATIK SINKRONI DATA APABILA APLIKASI DIBUKA / DIPOKUS KEMBALI
+        window.addEventListener('focus', () => {
+            fetchGoogleSheetData(true);
+        });
+        
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                fetchGoogleSheetData(true);
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             renderGrid();
-            fetchGoogleSheetData();
+            fetchGoogleSheetData(true);
             
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
         });
     </script>
     <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js');
-  });
-}
-</script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js');
+            });
+        }
+    </script>
 </body>
 </html>
