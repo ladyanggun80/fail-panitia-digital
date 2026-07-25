@@ -862,15 +862,13 @@
             try {
               await fetch(SCRIPT_URL, {
     method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
+    body: new URLSearchParams({
         tahun: selectedYear,
         panitiaId: activePanitiaId,
         action: 'updateDriveLink',
         driveLink: url
-    })
+    }),
+    redirect: 'follow'
 });
             } catch (err) {
                 console.error("Ralat simpan Drive Link:", err);
@@ -1012,23 +1010,22 @@
             try {
                const response = await fetch(SCRIPT_URL, {
     method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
+    body: new URLSearchParams({
         tahun: selectedYear,
         panitiaId: panitiaId,
         action: 'updateItem',
         instId: instId,
-        isChecked: isChecked,
-        evidenUrl: evidenUrl
-    })
+        isChecked: String(isChecked),
+        evidenUrl: evidenUrl || ''
+    }),
+    redirect: 'follow'
 });
 
                 const res = await response.json();
                 
                 if (res.status === 'success') {
                     syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Tersimpan (${selectedYear})`;
+                    await fetchGoogleSheetData(true);
                 } else {
                     syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-400"></span> ${res.message}`;
                 }
